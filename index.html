@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <link rel="stylesheet" type"text/css" href="style.css" />
+    <script type="text/javascript" src="Fraction.js"></script>
+    <script type="text/javascript" src="Distribution.js"></script>
+    <script type="text/javascript" src="Repeater.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="Render.js"></script>
+    <title>Sea Guard Reaper Damage Output</title>
+  </head>
+  <body>
+    <div id="controls">
+      <h1>Sea Guard Repeater</h1>
+      <h2>Damage output</h2>
+
+      <h3>Target unit</h3>
+      <label for="toHit">Hit on: </label>
+      <select id="toHit">
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3" selected="selected">3+</option>
+        <option value="4">4+</option>
+        <option value="5">5+</option>
+        <option value="6">6+</option>
+        <option value="7">7+</option>
+        <option value="8">8+</option>
+        <option value="9">9+</option>
+      </select>
+      <br />
+      <label for="toughness">Toughness: </label>
+      <select id="toughness">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected="selected">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+      <br />
+      <label for="armorSave">Armor save: </label>
+      <select id="armorSave">
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+        <option value="5">5+</option>
+        <option value="6">6+</option>
+        <option value="7" selected="selected">No armor save</option>
+      </select>
+      <br />
+      <label for="wardSave">Ward save: </label>
+      <select id="wardSave">
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+        <option value="5">5+</option>
+        <option value="6">6+</option>
+        <option value="7" selected="selected">No ward save</option>
+      </select>
+      <br />
+      <label for="wounds">Wounds per model: </label>
+      <select id="wounds">
+        <option value="1" selected="selected">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>
+      <br />
+      <label for="models">Models: </label>
+      <input type="text" id="models" value="10" />
+      <br />
+      <label for="ranks">Ranks: </label>
+      <input type="text" id="ranks" value="2" />
+      </select>
+    </div>
+    <div id="container">
+      <div id="chart" />
+    </div>
+  </body>
+</html>
