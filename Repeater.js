@@ -16,6 +16,10 @@ function and(a, b) {
   return a && b;
 }
 
+function plus(a, b) {
+  return a + b;
+}
+
 function rangedHit(n) {
   n = Math.max(2, n);
 
@@ -90,4 +94,35 @@ function repeatingShots(toHit, unit) {
   return Distributions.trials(6, hit.combine(and, wound).combine(and, armor).combine(and, ward)).map(function(n) {
     return Math.min(n, unit.models * unit.wounds);
   });
+}
+
+function newSingleShot(toHit, unit) {
+
+  return rangedHit(toHit).flatMap(function(isHit) {
+    if (isHit) {
+      var firstWound = Distributions.dice(6).map(geq(toWound(6, unit.toughness)));
+      var ward = Distributions.dice(6).map(lt(clamp(2, 7, unit.wardSave)));
+      var first = firstWound.combine(and, ward).flatMap(function(isWounded) {
+        if (isWounded) {
+          return Distributions.dice(3).map(function(multiWounds) {
+            return Math.min(multiWounds, unit.wounds);
+          });
+        }
+        else {
+          return Distributions.always(0);
+        }
+      });
+
+      var restWound = Distributions.dice(6).map(geq(toWound(3, unit.toughness)));
+      var rest = restWound.combine(and, ward);
+
+      var numberRest = Math.min(5, Math.min(unit.ranks, unit.models)) - 1;
+
+      return first.combine(plus, Distributions.trials(numberRest, rest));
+    }
+    else {
+      return Distributions.always(0);
+    }
+  });
+
 }
