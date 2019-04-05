@@ -20,6 +20,14 @@ body {
   color: black;
 }
 
+#infos {
+  margin: 20px;
+}
+
+#infos th {
+  text-align: right;
+}
+
 h1 {
   font-size: 1.3em;
   margin-bottom: 5px;
@@ -29,6 +37,10 @@ h2 {
   font-size: 1.3em;
   color: #444;
   margin-top: 5px;
+}
+
+#container h2 {
+  margin-left: 20px;
 }
 
 h3 {

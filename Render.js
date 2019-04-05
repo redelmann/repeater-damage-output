@@ -30,6 +30,9 @@ function drawChart() {
   var repeating = repeatingShots(toHit, unit);
   var single = singleShot(toHit, unit);
 
+  document.getElementById("mean_multi").innerHTML = repeating.mean().toFixed(2);
+  document.getElementById("mean_single").innerHTML = single.mean().toFixed(2);
+
   for (var i = 1; i <= 6; i++) {
     rows.push(['' + i + '+', repeating.probability(geq(i)).valueOf(), single.probability(geq(i)).valueOf()]);
   }

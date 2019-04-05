@@ -166,6 +166,24 @@ Distribution.prototype.probability = function(predicate) {
   return prob;
 }
 
+/**
+ * Returns the probability of a certain predicate being true.
+ *
+ * @param {value} The predicate to test.
+ * @return {Fraction} The probability of having a value
+ *                    that satifies the predicate.
+ */
+Distribution.prototype.mean = function() {
+  var domain = this.domain();
+  var mean = 0.0;
+  for (var i = 0; i < domain.length; i++) {
+    var value = domain[i]
+    var prob = this.probabilityAt(value).valueOf();
+    mean += value * prob;
+  }
+  return mean;
+}
+
 
 var Distributions = {
 
