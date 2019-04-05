@@ -23,17 +23,15 @@ function drawChart() {
   var data = new google.visualization.DataTable();
   data.addColumn('string', 'Wounds');
   data.addColumn('number', 'Repeating Shots');
-  data.addColumn('number', 'Single Shot (old)');
-  data.addColumn('number', 'Single Shot (new)')
+  data.addColumn('number', 'Single Shot')
 
   var rows = []
 
   var repeating = repeatingShots(toHit, unit);
   var single = singleShot(toHit, unit);
-  var newSingle = newSingleShot(toHit, unit);
 
   for (var i = 1; i <= 6; i++) {
-    rows.push(['' + i + '+', repeating.probability(geq(i)).valueOf(), single.probability(geq(i)).valueOf(), newSingle.probability(geq(i)).valueOf()]);
+    rows.push(['' + i + '+', repeating.probability(geq(i)).valueOf(), single.probability(geq(i)).valueOf()]);
   }
 
   data.addRows(rows);

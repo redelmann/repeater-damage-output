@@ -26,15 +26,18 @@ function rangedHit(n) {
   if (n <= 6) {
     return Distributions.dice(6).map(geq(n));
   }
-  else {
+  else if (n == 7) {
     return Distributions.dice(6).flatMap(function(m) {
-      if (m !== 6) {
-        return Distributions.always(false);
+      if (m == 6) {
+        return Distributions.dice(6).map(geq(4));
       }
       else {
-        return Distributions.dice(6).map(geq(n - 3));
+        return Distributions.always(false);
       }
     });
+  }
+  else {
+    return Distributions.always(false);
   }
 }
 
@@ -46,57 +49,22 @@ function toWound(strength, toughness) {
   return clamp(2, 6, toughness - strength + 4);
 }
 
-function toArmorSave(save, strength, piercing) {
-  return clamp(1, 7, save + clamp(0, 6, Math.max(strength - 3, 0) + piercing));
+function toArmorSave(save, piercing) {
+  return clamp(2, 7, save + piercing);
 }
 
-function singleShot(toHit, unit) {
-  function go(strength, ranks) {
-    return Distributions.dice(6).map(geq(toWound(strength, unit.toughness))).flatMap(function(isWounded) {
-      if (isWounded) {
-        return Distributions.dice(6).map(geq(clamp(2, 7, unit.wardSave))).flatMap(function(isSaved) {
-          if (isSaved) {
-            return Distributions.always(0);
-          }
-          else {
-            return Distributions.dice(3).flatMap(function(wounds) {
-              if (wounds >= unit.wounds && strength > 1 && ranks > 1) {
-                return go(strength - 1, ranks - 1).map(function(w) { return w + unit.wounds });
-              }
-              else {
-                return Distributions.always(Math.min(wounds, unit.wounds));
-              }
-            });
-          }
-        });
-      }
-      else {
-        return Distributions.always(0);
-      }
-    });
-  }
-
-  return rangedHit(toHit).flatMap(function(isHit) {
-    if (isHit) {
-      return go(6, Math.min(unit.models, unit.ranks));
-    }
-    else {
-      return Distributions.always(0);
-    }
-  });
-}
 
 function repeatingShots(toHit, unit) {
   var hit = rangedHit(toHit);
   var wound = Distributions.dice(6).map(geq(toWound(4, unit.toughness)));
-  var armor = Distributions.dice(6).map(lt(toArmorSave(unit.armorSave, 4, 1)));
+  var armor = Distributions.dice(6).map(lt(toArmorSave(unit.armorSave, 2)));
   var ward = Distributions.dice(6).map(lt(clamp(2, 7, unit.wardSave)));
   return Distributions.trials(6, hit.combine(and, wound).combine(and, armor).combine(and, ward)).map(function(n) {
     return Math.min(n, unit.models * unit.wounds);
   });
 }
 
-function newSingleShot(toHit, unit) {
+function singleShot(toHit, unit) {
 
   return rangedHit(toHit).flatMap(function(isHit) {
     if (isHit) {
